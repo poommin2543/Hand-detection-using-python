@@ -54,20 +54,67 @@ while(True):
 
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
-            thumb_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_MCP].y
-            index_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP].y
-            middle_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP].y
-            ring_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_MCP].y
-            pinky_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP].y
+            # thumb_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_MCP].y
+            # index_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP].y
+            # middle_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP].y
+            # ring_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_MCP].y
+            # pinky_is_open = hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_TIP].y < hand_landmarks.landmark[mp_hands.HandLandmark.PINKY_MCP].y
             # print(hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP].y,hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_MCP].y)
             # print(thumb_is_open)
             # print(index_is_open)
-            chee1 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y
-            chee2 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_DIP].y
-            chee3 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_PIP].y
-            chee4 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP].y
-            print(chee1,chee2,chee3,chee4)
-            fingers_open = thumb_is_open + index_is_open + middle_is_open + ring_is_open + pinky_is_open
+            thumb_is_open1 = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP]
+            thumb_is_open2 = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_DIP]
+            thumb_is_open3 = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_PIP]
+            thumb_is_open4 = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_MCP]
+
+            index_is_open1 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP]
+            index_is_open2 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_DIP]
+            index_is_open3 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_PIP]
+            index_is_open4 = hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_MCP]
+
+            middle_is_open1 = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP]
+            middle_is_open2 = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_DIP]
+            middle_is_open3 = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_PIP]
+            middle_is_open4 = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_MCP]
+
+            ring_is_open1 = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP]
+            ring_is_open2 = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_DIP]
+            ring_is_open3 = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_PIP]
+            ring_is_open4 = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_MCP]
+
+            pinky_is_open1 = hand_landmarks.landmark[mp_hands.HandLandmark.HandLandmark.PINKY_TIP]
+            pinky_is_open2 = hand_landmarks.landmark[mp_hands.HandLandmark.HandLandmark.PINKY_DIP]
+            pinky_is_open3 = hand_landmarks.landmark[mp_hands.HandLandmark.HandLandmark.PINKY_PIP]
+            pinky_is_open4 = hand_landmarks.landmark[mp_hands.HandLandmark.HandLandmark.PINKY_MCP]
+
+            # print(chee1,chee2,chee3,chee4)
+
+            print(thumb_is_open1)
+            print(thumb_is_open2)
+            print(thumb_is_open3)
+            print(thumb_is_open4)
+            
+            print(index_is_open1)
+            print(index_is_open2)
+            print(index_is_open3)
+            print(index_is_open4)
+
+            print(middle_is_open1)
+            print(middle_is_open2)
+            print(middle_is_open3)
+            print(middle_is_open4)
+
+            print(ring_is_open1)
+            print(ring_is_open2)
+            print(ring_is_open3)
+            print(ring_is_open4)
+
+            print(pinky_is_open1)
+            print(pinky_is_open2)
+            print(pinky_is_open3)
+            print(pinky_is_open4)
+            # print(thumb_is_open1.x)
+            # fingers_open = thumb_is_open + index_is_open + middle_is_open + ring_is_open + pinky_is_open
             # print(f'Fingers open: {fingers_open}')
 
             mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)

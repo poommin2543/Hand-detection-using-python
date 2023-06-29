@@ -25,7 +25,7 @@ fieldnames = [f'{finger}_{part}_{coordinate}' for finger, finger_parts in zip(fi
 print(type(fieldnames))
 fieldnames.append("CLASS")
 # Open a CSV file for writing
-with open('landmarks.csv', 'w', newline='') as csvfile:
+with open('landmarks.csv', 'a', newline='') as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
 
@@ -48,7 +48,7 @@ with open('landmarks.csv', 'w', newline='') as csvfile:
                         print(f"{finger} {part}: x={landmark.x}, y={landmark.y}, z={landmark.z}")
                         for coordinate in ['X', 'Y', 'Z']:
                             row[f'{finger}_{part}_{coordinate}'] = getattr(landmark, coordinate.lower())
-                row['CLASS'] = 0
+                row['CLASS'] = 3
                 writer.writerow(row)
 
                 mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)

@@ -2,6 +2,11 @@ import csv
 import cv2
 import mediapipe as mp
 import pandas as pd
+import joblib
+from sklearn.neural_network import MLPClassifier
+
+# Load the model
+loaded_model = joblib.load('mlp_classifier.joblib')
 # Create a VideoCapture object
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 
@@ -45,13 +50,15 @@ while True:
             for finger, finger_parts in zip(fingers, parts):
                 for part in finger_parts:
                     landmark = hand_landmarks.landmark[getattr(mp_hands.HandLandmark, f'{finger}_{part}')]
-                    print(f"{finger} {part}: x={landmark.x}, y={landmark.y}, z={landmark.z}")
+                    # print(f"{finger} {part}: x={landmark.x}, y={landmark.y}, z={landmark.z}")
                     for coordinate in ['X', 'Y', 'Z']:
                         row[f'{finger}_{part}_{coordinate}'] = getattr(landmark, coordinate.lower())
-                        noomdata = pd.DataFrame([row])
+            noomdata = pd.DataFrame([row])
             # row['CLASS'] = 3
             # writer.writerow(row)
-            print(noomdata)
+            predicted_y = loaded_model.predict(noomdata)
+            print(predicted_y)
+            # print(noomdata)
 
             mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 

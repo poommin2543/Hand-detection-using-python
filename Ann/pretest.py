@@ -57,7 +57,11 @@ while True:
             # row['CLASS'] = 3
             # writer.writerow(row)
             predicted_y = loaded_model.predict(noomdata)
-            print(predicted_y)
+            # predictedTolist = predicted_y.tolist()
+            # print(predicted_y)
+            # print(predictedTolist)
+            # print(type(predictedTolist))
+            print(predicted_y[0])
             # print(noomdata)
 
             mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)

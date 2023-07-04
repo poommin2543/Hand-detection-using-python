@@ -6,7 +6,8 @@ import joblib
 from sklearn.neural_network import MLPClassifier
 
 # Load the model
-loaded_model = joblib.load('mlp_classifier.joblib')
+# loaded_model = joblib.load('../mlp_classifier.joblib')
+loaded_model = joblib.load('C:\\Users\\Mr.Noom\\Documents\\Hand-detection-using-python-and-cvzone\\Ann\\mlp_classifier.joblib')
 # Create a VideoCapture object
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 

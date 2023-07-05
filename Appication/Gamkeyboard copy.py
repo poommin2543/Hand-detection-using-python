@@ -4,11 +4,8 @@ import mediapipe as mp
 import pandas as pd
 import joblib
 from sklearn.neural_network import MLPClassifier
-# import pyautogui
-# from pynput.keyboard import Key, Controller
-
-# keyboard = Controller()
-# import pydirectinput
+import pyautogui
+import pydirectinput
 # Load the model
 # loaded_model = joblib.load('../mlp_classifier.joblib')
 loaded_model = joblib.load('C:\\Users\\Mr.Noom\\Documents\\Hand-detection-using-python-and-cvzone\\Ann\\mlp_classifier.joblib')
@@ -69,45 +66,32 @@ while True:
             # print(predictedTolist)
             # print(type(predictedTolist))
             print(predicted_y[0])
-            text = f'Class {predicted_y[0]}'
-            org = (50, 50)
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            fontScale = 1
-            color = (0, 0, 255)
-            thickness = 2
-            cv2.putText(frame, text, org, font, fontScale,
-                  color, thickness, cv2.LINE_AA) 
-            # if predicted_y[0]==0:
-            #     # pyautogui.hotkey('w')
-            #     # pydirectinput.keyDown('w')
-            #     # pydirectinput.keyUp('space')
-            #     # pydirectinput.keyUp('a')
-            #     # pydirectinput.keyUp('d')
-            #     keyboard.press('w')
-            #     keyboard.release('w')
-            #     # print("OK")
-            # elif predicted_y[0]==1:
-            #     keyboard.press(Key.space)
-            #     keyboard.release('space')
-            #     # pyautogui.hotkey('space')
-            #     # pydirectinput.keyDown('space')
-            #     # pydirectinput.keyUp('space')
-            #     # pydirectinput.keyUp('a')
-            #     # pydirectinput.keyUp('d')
-            # elif predicted_y[0]==2:
-            #     keyboard.press('a')
-            #     keyboard.release('a')
-            #     # pyautogui.hotkey('a')
-            #     # pydirectinput.keyDown('a')
-            #     # pydirectinput.keyUp('d')
-            #     # pydirectinput.keyUp('a')
-            #     # pydirectinput.keyUp('d')
-            # elif predicted_y[0]==3:
-            #     keyboard.press('d')
-            #     keyboard.release('d')
-                # pyautogui.hotkey('d')
-                # pydirectinput.keyDown('d')
+            if predicted_y[0]==0:
+                # pyautogui.hotkey('w')
+                pydirectinput.keyDown('w')
+                pydirectinput.keyUp('space')
+                pydirectinput.keyUp('a')
+                pydirectinput.keyUp('d')
+                # print("OK")
+            elif predicted_y[0]==1:
+                # keyboard.press(Key.space)
+                # keyboard.release('space')
+                # pyautogui.hotkey('space')
+                pydirectinput.keyUp('w')
+                pydirectinput.keyDown('space')
+                pydirectinput.keyUp('space')
                 # pydirectinput.keyUp('a')
+                # pydirectinput.keyUp('d')
+            elif predicted_y[0]==2:
+                # pyautogui.hotkey('a')
+                pydirectinput.keyDown('a')
+                pydirectinput.keyUp('d')
+                # pydirectinput.keyUp('a')
+                # pydirectinput.keyUp('d')
+            elif predicted_y[0]==3:
+                # pyautogui.hotkey('d')
+                pydirectinput.keyDown('d')
+                pydirectinput.keyUp('a')
                 # pydirectinput.keyUp('a')
                 # pydirectinput.keyUp('d')
             # print(noomdata)

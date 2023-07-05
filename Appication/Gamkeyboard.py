@@ -4,10 +4,65 @@ import mediapipe as mp
 import pandas as pd
 import joblib
 from sklearn.neural_network import MLPClassifier
-# import pyautogui
-# from pynput.keyboard import Key, Controller
+import pyautogui
+import os
+import ctypes
+import win32api
 
-# keyboard = Controller()
+PUL = ctypes.POINTER(ctypes.c_ulong)
+
+class KeyBdInput(ctypes.Structure):
+   _fields_ = [("wVk", ctypes.c_ushort),
+               ("wScan", ctypes.c_ushort),
+               ("dwFlags", ctypes.c_ulong),
+               ("time", ctypes.c_ulong),
+               ("dwExtraInfo", PUL)]
+
+
+class HardwareInput(ctypes.Structure):
+   _fields_ = [("uMsg", ctypes.c_ulong),
+               ("wParamL", ctypes.c_short),
+               ("wParamH", ctypes.c_ushort)]
+
+
+class MouseInput(ctypes.Structure):
+   _fields_ = [("dx", ctypes.c_long),
+               ("dy", ctypes.c_long),
+               ("mouseData", ctypes.c_ulong),
+               ("dwFlags", ctypes.c_ulong),
+               ("time", ctypes.c_ulong),
+               ("dwExtraInfo", PUL)]
+
+
+class Input_I(ctypes.Union):
+   _fields_ = [("ki", KeyBdInput),
+               ("mi", MouseInput),
+               ("hi", HardwareInput)]
+
+
+class Input(ctypes.Structure):
+   _fields_ = [("type", ctypes.c_ulong),
+("ii", Input_I)]
+
+def press_key(key):
+   extra = ctypes.c_ulong(0)
+   ii_ = Input_I()
+
+   flags = 0x0008
+
+   ii_.ki = KeyBdInput(0, key, flags, 0, ctypes.pointer(extra))
+   x = Input(ctypes.c_ulong(1), ii_)
+   ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
+def release_key(key):
+   extra = ctypes.c_ulong(0)
+   ii_ = Input_I()
+
+   flags = 0x0008 | 0x0002
+
+   ii_.ki = KeyBdInput(0, key, flags, 0, ctypes.pointer(extra))
+   x = Input(ctypes.c_ulong(1), ii_)
+   ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 # import pydirectinput
 # Load the model
 # loaded_model = joblib.load('../mlp_classifier.joblib')
@@ -61,56 +116,20 @@ while True:
                     for coordinate in ['X', 'Y', 'Z']:
                         row[f'{finger}_{part}_{coordinate}'] = getattr(landmark, coordinate.lower())
             noomdata = pd.DataFrame([row])
-            # row['CLASS'] = 3
-            # writer.writerow(row)
             predicted_y = loaded_model.predict(noomdata)
-            # predictedTolist = predicted_y.tolist()
-            # print(predicted_y)
-            # print(predictedTolist)
-            # print(type(predictedTolist))
             print(predicted_y[0])
-            text = f'Class {predicted_y[0]}'
-            org = (50, 50)
-            font = cv2.FONT_HERSHEY_SIMPLEX
-            fontScale = 1
-            color = (0, 0, 255)
-            thickness = 2
-            cv2.putText(frame, text, org, font, fontScale,
-                  color, thickness, cv2.LINE_AA) 
-            # if predicted_y[0]==0:
-            #     # pyautogui.hotkey('w')
-            #     # pydirectinput.keyDown('w')
-            #     # pydirectinput.keyUp('space')
-            #     # pydirectinput.keyUp('a')
-            #     # pydirectinput.keyUp('d')
-            #     keyboard.press('w')
-            #     keyboard.release('w')
-            #     # print("OK")
-            # elif predicted_y[0]==1:
-            #     keyboard.press(Key.space)
-            #     keyboard.release('space')
-            #     # pyautogui.hotkey('space')
-            #     # pydirectinput.keyDown('space')
-            #     # pydirectinput.keyUp('space')
-            #     # pydirectinput.keyUp('a')
-            #     # pydirectinput.keyUp('d')
-            # elif predicted_y[0]==2:
-            #     keyboard.press('a')
-            #     keyboard.release('a')
-            #     # pyautogui.hotkey('a')
-            #     # pydirectinput.keyDown('a')
-            #     # pydirectinput.keyUp('d')
-            #     # pydirectinput.keyUp('a')
-            #     # pydirectinput.keyUp('d')
-            # elif predicted_y[0]==3:
-            #     keyboard.press('d')
-            #     keyboard.release('d')
-                # pyautogui.hotkey('d')
-                # pydirectinput.keyDown('d')
-                # pydirectinput.keyUp('a')
-                # pydirectinput.keyUp('a')
-                # pydirectinput.keyUp('d')
-            # print(noomdata)
+            if predicted_y[0]==0:
+                press_key(0x23);release_key(0x11); # w
+                # print("OK")
+            elif predicted_y[0]==1:
+                press_key(0x39);release_key(0x39); # SPACE  
+                
+            elif predicted_y[0]==2:                                      
+                press_key(0x1E);release_key(0x1E); # a
+                
+            elif predicted_y[0]==3:
+               press_key(0x20);release_key(0x20); # g
+               
 
             mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 

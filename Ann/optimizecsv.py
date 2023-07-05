@@ -48,7 +48,7 @@ with open('landmarks.csv', 'a', newline='') as csvfile:
                         print(f"{finger} {part}: x={landmark.x}, y={landmark.y}, z={landmark.z}")
                         for coordinate in ['X', 'Y', 'Z']:
                             row[f'{finger}_{part}_{coordinate}'] = getattr(landmark, coordinate.lower())
-                row['CLASS'] = 3
+                row['CLASS'] = 0
                 writer.writerow(row)
 
                 mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)

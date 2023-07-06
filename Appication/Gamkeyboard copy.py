@@ -6,6 +6,7 @@ import joblib
 from sklearn.neural_network import MLPClassifier
 import pyautogui
 import pydirectinput
+import time
 # Load the model
 # loaded_model = joblib.load('../mlp_classifier.joblib')
 loaded_model = joblib.load('C:\\Users\\Mr.Noom\\Documents\\Hand-detection-using-python-and-cvzone\\Ann\\mlp_classifier.joblib')
@@ -66,40 +67,31 @@ while True:
             # print(predictedTolist)
             # print(type(predictedTolist))
             print(predicted_y[0])
+            t0 = time.time()
             if predicted_y[0]==0:
-                # pyautogui.hotkey('w')
                 pydirectinput.keyDown('w')
                 pydirectinput.keyUp('space')
                 pydirectinput.keyUp('a')
                 pydirectinput.keyUp('d')
                 # print("OK")
             elif predicted_y[0]==1:
-                # keyboard.press(Key.space)
-                # keyboard.release('space')
-                # pyautogui.hotkey('space')
                 pydirectinput.keyUp('w')
                 pydirectinput.keyDown('space')
                 pydirectinput.keyUp('space')
-                # pydirectinput.keyUp('a')
-                # pydirectinput.keyUp('d')
             elif predicted_y[0]==2:
-                # pyautogui.hotkey('a')
                 pydirectinput.keyDown('a')
                 pydirectinput.keyUp('d')
-                # pydirectinput.keyUp('a')
-                # pydirectinput.keyUp('d')
             elif predicted_y[0]==3:
-                # pyautogui.hotkey('d')
                 pydirectinput.keyDown('d')
                 pydirectinput.keyUp('a')
-                # pydirectinput.keyUp('a')
-                # pydirectinput.keyUp('d')
-            # print(noomdata)
-
+            
+            t1 = time.time()
+            t = t1-t0
+            # print(t)
             mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
     # Display the resulting frame
-    cv2.imshow('frame', frame)
+            cv2.imshow('frame', frame)
 
     # Break the loop on 'q' key press
     if cv2.waitKey(1) & 0xFF == ord('q'):

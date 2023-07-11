@@ -5,67 +5,17 @@ import pandas as pd
 import joblib
 from sklearn.neural_network import MLPClassifier
 import pyautogui
-import os
-import ctypes
-import win32api
-import time
-PUL = ctypes.POINTER(ctypes.c_ulong)
-
-class KeyBdInput(ctypes.Structure):
-   _fields_ = [("wVk", ctypes.c_ushort),
-               ("wScan", ctypes.c_ushort),
-               ("dwFlags", ctypes.c_ulong),
-               ("time", ctypes.c_ulong),
-               ("dwExtraInfo", PUL)]
-
-
-class HardwareInput(ctypes.Structure):
-   _fields_ = [("uMsg", ctypes.c_ulong),
-               ("wParamL", ctypes.c_short),
-               ("wParamH", ctypes.c_ushort)]
-
-
-class MouseInput(ctypes.Structure):
-   _fields_ = [("dx", ctypes.c_long),
-               ("dy", ctypes.c_long),
-               ("mouseData", ctypes.c_ulong),
-               ("dwFlags", ctypes.c_ulong),
-               ("time", ctypes.c_ulong),
-               ("dwExtraInfo", PUL)]
-
-
-class Input_I(ctypes.Union):
-   _fields_ = [("ki", KeyBdInput),
-               ("mi", MouseInput),
-               ("hi", HardwareInput)]
-
-
-class Input(ctypes.Structure):
-   _fields_ = [("type", ctypes.c_ulong),
-("ii", Input_I)]
-
-def press_key(key):
-   extra = ctypes.c_ulong(0)
-   ii_ = Input_I()
-
-   flags = 0x0008
-
-   ii_.ki = KeyBdInput(0, key, flags, 0, ctypes.pointer(extra))
-   x = Input(ctypes.c_ulong(1), ii_)
-   ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
-
-def release_key(key):
-   extra = ctypes.c_ulong(0)
-   ii_ = Input_I()
-
-   flags = 0x0008 | 0x0002
-
-   ii_.ki = KeyBdInput(0, key, flags, 0, ctypes.pointer(extra))
-   x = Input(ctypes.c_ulong(1), ii_)
-   ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
-# import pydirectinput
+import pydirectinput
 # Load the model
 # loaded_model = joblib.load('../mlp_classifier.joblib')
+from websockets.sync.client import connect
+
+def setControl(command):
+    with connect("ws://192.168.50.234:8765") as websocket:
+        websocket.send(command)
+        message = websocket.recv()
+        print(f"Received: {message}")
+
 loaded_model = joblib.load('C:\\Users\\Mr.Noom\\Documents\\Hand-detection-using-python-and-cvzone\\Ann\\mlp_classifier.joblib')
 # Create a VideoCapture object
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -116,27 +66,22 @@ while True:
                     for coordinate in ['X', 'Y', 'Z']:
                         row[f'{finger}_{part}_{coordinate}'] = getattr(landmark, coordinate.lower())
             noomdata = pd.DataFrame([row])
+            # row['CLASS'] = 3
+            # writer.writerow(row)
             predicted_y = loaded_model.predict(noomdata)
+            # predictedTolist = predicted_y.tolist()
+            # print(predicted_y)
+            # print(predictedTolist)
+            # print(type(predictedTolist))
             print(predicted_y[0])
             if predicted_y[0]==0:
-                press_key(0x11) # w
-                release_key(0x1E) # a
-                release_key(0x20) # d
-                # time.sleep(0.2)
+                setControl(str(0))
             elif predicted_y[0]==1:
-                release_key(0x11) # w
-                press_key(0x39)# SPACE
-                release_key(0x39) # SPACE
-                # time.sleep(0.2)
-            elif predicted_y[0]==2:                             
-                press_key(0x1E) # a
-                release_key(0x20) # d
-                # time.sleep(0.2)
+                setControl(str(1))
+            elif predicted_y[0]==2:
+                setControl(str(2))
             elif predicted_y[0]==3:
-               press_key(0x20) # d
-               release_key(0x1E) # a
-            #    time.sleep(0.2)
-
+                setControl(str(3))
             mp.solutions.drawing_utils.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
     # Display the resulting frame
